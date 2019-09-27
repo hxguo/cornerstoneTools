@@ -3,6 +3,7 @@ import { getLogger } from '../../util/logger.js';
 import deepmerge from './../../util/deepmerge.js';
 import { setToolCursor } from '../../store/setToolCursor.js';
 import { getModule } from '../../store';
+import lang from '../../lang/index';
 
 const logger = getLogger('tools:base:BaseTool');
 
@@ -49,7 +50,11 @@ class BaseTool {
      * @type {String}
      */
     this.name = name;
-
+    this.lang = lang[globalConfigurationModule.configuration.langConfig];
+    if (configuration) {
+      configuration.lang =
+        lang[globalConfigurationModule.configuration.langConfig];
+    }
     /** @type {String} */
     this.mode = 'disabled';
     this.element = undefined;

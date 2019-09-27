@@ -424,15 +424,18 @@ function _findTextBoxAnchorPoints(startHandle, endHandle) {
  *
  * @param {*} area
  * @param {*} hasPixelSpacing
+ * @param {*} options
  * @returns {string} The formatted label for showing area
  */
-function _formatArea(area, hasPixelSpacing) {
+function _formatArea(area, hasPixelSpacing, options) {
   // This uses Char code 178 for a superscript 2
   const suffix = hasPixelSpacing
     ? ` mm${String.fromCharCode(178)}`
     : ` px${String.fromCharCode(178)}`;
 
-  return `Area: ${numbersWithCommas(area.toFixed(2))}${suffix}`;
+  return `${options.lang ? options.lang.area : 'Area'}: ${numbersWithCommas(
+    area.toFixed(2)
+  )}${suffix}`;
 }
 
 function _getUnit(modality, showHounsfieldUnits) {
@@ -468,14 +471,16 @@ function _createTextBoxContent(
     const hasStandardUptakeValues = meanStdDevSUV && meanStdDevSUV.mean !== 0;
     const unit = _getUnit(modality, options.showHounsfieldUnits);
 
-    let meanString = `Mean: ${numbersWithCommas(mean.toFixed(2))} ${unit}`;
-    const stdDevString = `Std Dev: ${numbersWithCommas(
-      stdDev.toFixed(2)
-    )} ${unit}`;
+    let meanString = `${
+      options.lang ? options.lang.mean : 'Mean'
+    }: ${numbersWithCommas(mean.toFixed(2))} ${unit}`;
+    const stdDevString = `${
+      options.lang ? options.lang.stdDev : 'Std Dev'
+    }: ${numbersWithCommas(stdDev.toFixed(2))} ${unit}`;
 
     // If this image has SUV values to display, concatenate them to the text line
     if (hasStandardUptakeValues) {
-      const SUVtext = ' SUV: ';
+      const SUVtext = ` ${options.lang ? options.lang.SUV : 'SUV'}: `;
 
       const meanSuvString = `${SUVtext}${numbersWithCommas(
         meanStdDevSUV.mean.toFixed(2)
@@ -495,12 +500,17 @@ function _createTextBoxContent(
       otherLines.push(`${meanString}${meanSuvString}`);
       otherLines.push(`${stdDevString}     ${stdDevSuvString}`);
     } else {
-      otherLines.push(`${meanString}     ${stdDevString}`);
+      otherLines.push(`${meanString}`);
+      otherLines.push(`${stdDevString}`);
     }
 
     if (showMinMax) {
-      let minString = `Min: ${min} ${unit}`;
-      const maxString = `Max: ${max} ${unit}`;
+      let minString = `${
+        options.lang ? options.lang.min : 'Min'
+      }: ${min} ${unit}`;
+      const maxString = `${
+        options.lang ? options.lang.max : 'Max'
+      }: ${max} ${unit}`;
       const targetStringLength = hasStandardUptakeValues
         ? Math.floor(context.measureText(`${stdDevString}     `).width)
         : Math.floor(context.measureText(`${meanString}     `).width);
@@ -513,7 +523,7 @@ function _createTextBoxContent(
     }
   }
 
-  textLines.push(_formatArea(area, hasPixelSpacing));
+  textLines.push(_formatArea(area, hasPixelSpacing, options));
   otherLines.forEach(x => textLines.push(x));
 
   return textLines;

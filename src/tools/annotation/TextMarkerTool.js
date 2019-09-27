@@ -227,7 +227,10 @@ export default class TextMarkerTool extends BaseAnnotationTool {
  */
 const changeTextCallback = (data, eventData, doneChangingTextCallback) => {
   // eslint-disable-next-line no-alert
-  doneChangingTextCallback(data, prompt('Change your annotation:'));
+  doneChangingTextCallback(
+    data,
+    prompt(this.lang ? this.lang.textMarkerToolTips : 'Change your annotation:')
+  );
 };
 
 /**

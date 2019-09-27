@@ -1,0 +1,16 @@
+export default {
+  arrowAnnotateCreateTips: '请输入您的标注内容:',
+  arrowAnnotateUpdateTips: '请重新输入您的标注内容:',
+  textMarkerToolTips: '请输入您的标签内容',
+  mean: '平均值',
+  stdDev: '标准差',
+  SUV: '标准摄取值',
+  min: '最小值',
+  max: '最大值',
+  area: '面积',
+  mm: '毫米',
+  pixels: '像素',
+  SP: '存储像素值',
+  MO: '标准图像像素值',
+  coordinate: '坐标',
+};

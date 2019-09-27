@@ -44,7 +44,6 @@ export default class ArrowAnnotateTool extends BaseAnnotationTool {
       },
       svgCursor: arrowAnnotateCursor,
     };
-
     super(props, defaultProps);
     this.preventNewMeasurement = false;
   }
@@ -325,9 +324,17 @@ export default class ArrowAnnotateTool extends BaseAnnotationTool {
 }
 
 function getTextCallback(doneChangingTextCallback) {
-  doneChangingTextCallback(prompt('Enter your annotation:'));
+  doneChangingTextCallback(
+    prompt(
+      this.lang ? this.lang.arrowAnnotateCreateTips : 'Enter your annotation:'
+    )
+  );
 }
 
 function changeTextCallback(data, eventData, doneChangingTextCallback) {
-  doneChangingTextCallback(prompt('Change your annotation:'));
+  doneChangingTextCallback(
+    prompt(
+      this.lang ? this.lang.arrowAnnotateUpdateTips : 'Change your annotation:'
+    )
+  );
 }

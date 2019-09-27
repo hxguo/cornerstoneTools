@@ -227,7 +227,7 @@ export default class LengthTool extends BaseAnnotationTool {
       let suffix = 'mm';
 
       if (!rowPixelSpacing || !colPixelSpacing) {
-        suffix = 'pixels';
+        suffix = this.lang ? this.lang.pixels : 'pixels';
       }
 
       data.unit = suffix;

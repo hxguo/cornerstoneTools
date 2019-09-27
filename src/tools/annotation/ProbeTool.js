@@ -165,12 +165,16 @@ export default class ProbeTool extends BaseAnnotationTool {
           }
         }
 
-        let text, str;
+        let text;
+        let str = '',
+          strMO = '';
 
         const { x, y, storedPixels, sp, mo, suv } = data.cachedStats;
 
         if (x >= 0 && y >= 0 && x < image.columns && y < image.rows) {
-          text = `${x}, ${y}`;
+          text = `${
+            this.lang ? this.lang.coordinate : 'Coordinate'
+          }:(${x}, ${y})`;
 
           if (image.color) {
             str = `R: ${storedPixels[0]} G: ${storedPixels[1]} B: ${
@@ -178,9 +182,19 @@ export default class ProbeTool extends BaseAnnotationTool {
             }`;
           } else {
             // Draw text
-            str = `SP: ${sp} MO: ${parseFloat(mo.toFixed(3))}`;
+            /*
+            str = `${this.lang ? this.lang.SP : 'SP'}: ${sp} ${
+              this.lang ? this.lang.MO : 'MO'
+            }: ${parseFloat(mo.toFixed(3))}`;
+            */
+            str = `${this.lang ? this.lang.SP : 'SP'}: ${sp}`;
+            strMO = `${this.lang ? this.lang.MO : 'MO'}: ${parseFloat(
+              mo.toFixed(3)
+            )}`;
             if (suv) {
-              str += ` SUV: ${parseFloat(suv.toFixed(3))}`;
+              str += ` ${this.lang ? this.lang.SUV : 'SUV'}: ${parseFloat(
+                suv.toFixed(3)
+              )}`;
             }
           }
 
@@ -202,6 +216,14 @@ export default class ProbeTool extends BaseAnnotationTool {
             textCoords.y + fontHeight + 5,
             color
           );
+          strMO &&
+            drawTextBox(
+              context,
+              strMO,
+              textCoords.x,
+              textCoords.y + 2 * (fontHeight + 5),
+              color
+            );
           drawTextBox(context, text, textCoords.x, textCoords.y, color);
         }
       });

@@ -87,6 +87,7 @@ export default class DragProbeTool extends BaseTool {
  */
 function defaultStrategy(evt) {
   const config = this.configuration;
+  const lang = this.lang ? this.lang : config ? config.lang : null;
   const cornerstone = external.cornerstone;
   const eventData = evt.detail;
   const { element, image, currentPoints, canvasContext } = eventData;
@@ -106,9 +107,10 @@ function defaultStrategy(evt) {
   draw(context, context => {
     setShadow(context, config);
 
-    const text = `${x}, ${y}`;
+    const text = `${lang ? lang.coordinate : 'Coordinate'}:(${x}, ${y})`;
     let storedPixels;
-    let str;
+    let str = '',
+      strMO = '';
 
     if (image.color) {
       storedPixels = getRGBPixels(element, x, y, 1, 1);
@@ -122,9 +124,10 @@ function defaultStrategy(evt) {
       const suv = calculateSUV(image, sp);
 
       // Draw text
-      str = `SP: ${sp} MO: ${parseFloat(mo.toFixed(3))}`;
+      str = `${lang ? lang.SP : 'SP'}: ${sp}`;
+      strMO = `${lang ? lang.MO : 'MO'}: ${parseFloat(mo.toFixed(3))}`;
       if (suv) {
-        str += ` SUV: ${parseFloat(suv.toFixed(3))}`;
+        str += ` ${lang ? lang.SUV : 'SUV'}: ${parseFloat(suv.toFixed(3))}`;
       }
     }
 
@@ -141,6 +144,14 @@ function defaultStrategy(evt) {
       textCoords.y + fontHeight + 5,
       color
     );
+    strMO &&
+      drawTextBox(
+        context,
+        strMO,
+        textCoords.x,
+        textCoords.y + 2 * (fontHeight + 5),
+        color
+      );
     drawTextBox(context, text, textCoords.x, textCoords.y, color);
   });
 }
@@ -153,6 +164,7 @@ function defaultStrategy(evt) {
  */
 function minimalStrategy(evt) {
   const config = this.configuration;
+  const lang = this.lang ? this.lang : config ? config.lang : null;
   const cornerstone = external.cornerstone;
   const eventData = evt.detail;
   const {
@@ -223,7 +235,7 @@ function minimalStrategy(evt) {
         const suv = calculateSUV(image, sp);
 
         if (suv) {
-          text += ` SUV: ${parseFloat(suv.toFixed(2))}`;
+          text += ` ${lang ? lang.SUV : 'SUV'}: ${parseFloat(suv.toFixed(2))}`;
         }
       } else {
         text += modalityPixelValueText;

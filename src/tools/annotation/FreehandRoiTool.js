@@ -492,17 +492,17 @@ export default class FreehandRoiTool extends BaseAnnotationTool {
         data.unit = moSuffix;
 
         // Create a line of text to display the mean and any units that were specified (i.e. HU)
-        let meanText = `Mean: ${numbersWithCommas(
-          meanStdDev.mean.toFixed(2)
-        )} ${moSuffix}`;
+        let meanText = `${
+          this.lang ? this.lang.mean : 'Mean'
+        }: ${numbersWithCommas(meanStdDev.mean.toFixed(2))} ${moSuffix}`;
         // Create a line of text to display the standard deviation and any units that were specified (i.e. HU)
-        let stdDevText = `StdDev: ${numbersWithCommas(
-          meanStdDev.stdDev.toFixed(2)
-        )} ${moSuffix}`;
+        let stdDevText = `${
+          this.lang ? this.lang.stdDev : 'StdDev'
+        }: ${numbersWithCommas(meanStdDev.stdDev.toFixed(2))} ${moSuffix}`;
 
         // If this image has SUV values to display, concatenate them to the text line
         if (meanStdDevSUV && meanStdDevSUV.mean !== undefined) {
-          const SUVtext = ' SUV: ';
+          const SUVtext = ` ${this.lang ? this.lang.SUV : 'SUV'}: `;
 
           meanText +=
             SUVtext + numbersWithCommas(meanStdDevSUV.mean.toFixed(2));
@@ -527,7 +527,9 @@ export default class FreehandRoiTool extends BaseAnnotationTool {
         }
 
         // Create a line of text to display the area and its units
-        const areaText = `Area: ${numbersWithCommas(area.toFixed(2))}${suffix}`;
+        const areaText = `${
+          this.lang ? this.lang.area : 'Area'
+        }: ${numbersWithCommas(area.toFixed(2))}${suffix}`;
 
         // Add this text line to the array to be displayed in the textbox
         textLines.push(areaText);

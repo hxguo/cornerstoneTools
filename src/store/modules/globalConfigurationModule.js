@@ -3,6 +3,7 @@ const configuration = {
   touchEnabled: true,
   globalToolSyncEnabled: false,
   showSVGCursors: false,
+  langConfig: 'en',
 };
 
 export default {
