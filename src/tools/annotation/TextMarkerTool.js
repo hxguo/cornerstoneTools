@@ -9,6 +9,7 @@ import {
   getToolState,
 } from './../../stateManagement/toolState.js';
 import { textMarkerCursor } from '../cursors/index.js';
+import common from '../../util/common';
 
 /**
  * @public
@@ -47,10 +48,11 @@ export default class TextMarkerTool extends BaseAnnotationTool {
 
     // Create the measurement data for this tool with the end handle activated
     const measurementData = {
+      primaryKey: common.getUUID(),
       visible: true,
       active: true,
       text: config.current,
-      color: undefined,
+      color: toolColors.getToolColor(),
       handles: {
         end: {
           x: eventData.currentPoints.image.x,
@@ -203,7 +205,12 @@ export default class TextMarkerTool extends BaseAnnotationTool {
         external.cornerstone.updateImage(element);
 
         // Allow relabelling via a callback
-        config.changeTextCallback(data, eventData, doneChangingTextCallback);
+        config.changeTextCallback(
+          this,
+          data,
+          eventData,
+          doneChangingTextCallback
+        );
 
         evt.stopImmediatePropagation();
         evt.preventDefault();
@@ -220,16 +227,24 @@ export default class TextMarkerTool extends BaseAnnotationTool {
  * modal, overlay, popup or any kind of interaction with the user to be able to update
  * the text marker label.
  *
+ * @param config
  * @param  {Object} data
  * @param  {Object} eventData
  * @param  {doneChangingTextCallback} doneChangingTextCallback
  * @returns {void}
  */
-const changeTextCallback = (data, eventData, doneChangingTextCallback) => {
+const changeTextCallback = (
+  config,
+  data,
+  eventData,
+  doneChangingTextCallback
+) => {
   // eslint-disable-next-line no-alert
   doneChangingTextCallback(
     data,
-    prompt(this.lang ? this.lang.textMarkerToolTips : 'Change your annotation:')
+    prompt(
+      config.lang ? config.lang.textMarkerToolTips : 'Change your annotation:'
+    )
   );
 };
 

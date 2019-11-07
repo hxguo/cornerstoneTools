@@ -22,6 +22,7 @@ import drawArrow from './../../drawing/drawArrow.js';
 import drawHandles from './../../drawing/drawHandles.js';
 import { textBoxWidth } from './../../drawing/drawTextBox.js';
 import { arrowAnnotateCursor } from '../cursors/index.js';
+import common from '../../util/common';
 
 /**
  * @public
@@ -51,9 +52,10 @@ export default class ArrowAnnotateTool extends BaseAnnotationTool {
   createNewMeasurement(evt) {
     // Create the measurement data for this tool with the end handle activated
     return {
+      primaryKey: common.getUUID(),
       visible: true,
       active: true,
-      color: undefined,
+      color: toolColors.getToolColor(),
       handles: {
         start: {
           x: evt.detail.currentPoints.image.x,

@@ -13,6 +13,7 @@ import {
 } from '../drawing/index.js';
 import drawTextBox, { textBoxWidth } from '../drawing/drawTextBox.js';
 import { probeCursor } from './cursors/index.js';
+import common from '../util/common';
 
 /**
  * @public
@@ -120,12 +121,16 @@ function defaultStrategy(evt) {
     } else {
       storedPixels = cornerstone.getStoredPixels(element, x, y, 1, 1);
       const sp = storedPixels[0];
-      const mo = sp * image.slope + image.intercept;
+      // const mo = sp * image.slope + image.intercept;
+      const mo = common.computedDiffuseDensity(
+        storedPixels[0],
+        (this.density && this.density.maxDensity) || 4.7
+      );
       const suv = calculateSUV(image, sp);
 
       // Draw text
       str = `${lang ? lang.SP : 'SP'}: ${sp}`;
-      strMO = `${lang ? lang.MO : 'MO'}: ${parseFloat(mo.toFixed(3))}`;
+      strMO = `${lang ? lang.MO : 'MO'}: ${mo}`;
       if (suv) {
         str += ` ${lang ? lang.SUV : 'SUV'}: ${parseFloat(suv.toFixed(3))}`;
       }
@@ -224,8 +229,11 @@ function minimalStrategy(evt) {
         1
       );
       const sp = storedPixels[0];
-      const mo = sp * image.slope + image.intercept;
-
+      // const mo = sp * image.slope + image.intercept;
+      const mo = common.computedDiffuseDensity(
+        storedPixels[0],
+        (this.density && this.density.maxDensity) || 4.7
+      );
       const modalityPixelValueText = parseFloat(mo.toFixed(2));
 
       if (modality === 'CT') {

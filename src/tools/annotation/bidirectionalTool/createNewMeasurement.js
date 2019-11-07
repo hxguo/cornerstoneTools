@@ -1,3 +1,5 @@
+import common from '../../../util/common';
+
 const getHandle = (x, y, index, extraAttributes = {}) =>
   Object.assign(
     {
@@ -16,6 +18,7 @@ export default function(mouseEventData) {
   const { x, y } = mouseEventData.currentPoints.image;
   // Create the measurement data for this tool with the end handle activated
   const measurementData = {
+    primaryKey: common.getUUID(),
     toolType: this.name,
     isCreating: true,
     visible: true,

@@ -27,11 +27,11 @@ function getActiveColor() {
 }
 
 function getColorIfActive(data) {
-  if (data.color) {
+  /* If (data.color) {
     return data.color;
-  }
+  }*/
 
-  return data.active ? activeColor : defaultColor;
+  return data.active ? activeColor : data.color ? data.color : defaultColor;
 }
 
 const toolColors = {

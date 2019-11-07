@@ -14,6 +14,7 @@ import calculateSUV from '../../util/calculateSUV.js';
 import { probeCursor } from '../cursors/index.js';
 import { getLogger } from '../../util/logger.js';
 import throttle from '../../util/throttle';
+import common from '../../util/common';
 
 const logger = getLogger('tools:annotation:ProbeTool');
 
@@ -51,9 +52,10 @@ export default class ProbeTool extends BaseAnnotationTool {
     }
 
     return {
+      primaryKey: common.getUUID(),
       visible: true,
       active: true,
-      color: undefined,
+      color: toolColors.getToolColor(),
       invalidated: true,
       handles: {
         end: {
@@ -117,7 +119,11 @@ export default class ProbeTool extends BaseAnnotationTool {
           1
         );
         stats.sp = stats.storedPixels[0];
-        stats.mo = stats.sp * image.slope + image.intercept;
+        // Stats.mo = stats.sp * image.slope + image.intercept;
+        stats.mo = common.computedDiffuseDensity(
+          stats.storedPixels[0],
+          (this.density && this.density.maxDensity) || 4.7
+        );
         stats.suv = calculateSUV(image, stats.sp);
       }
     }
@@ -188,9 +194,7 @@ export default class ProbeTool extends BaseAnnotationTool {
             }: ${parseFloat(mo.toFixed(3))}`;
             */
             str = `${this.lang ? this.lang.SP : 'SP'}: ${sp}`;
-            strMO = `${this.lang ? this.lang.MO : 'MO'}: ${parseFloat(
-              mo.toFixed(3)
-            )}`;
+            strMO = `${this.lang ? this.lang.MO : 'MO'}: ${mo}`;
             if (suv) {
               str += ` ${this.lang ? this.lang.SUV : 'SUV'}: ${parseFloat(
                 suv.toFixed(3)

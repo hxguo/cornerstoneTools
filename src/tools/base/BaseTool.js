@@ -51,9 +51,12 @@ class BaseTool {
      */
     this.name = name;
     this.lang = lang[globalConfigurationModule.configuration.langConfig];
+    this.density = globalConfigurationModule.configuration.densityConfig;
     if (configuration) {
       configuration.lang =
         lang[globalConfigurationModule.configuration.langConfig];
+      configuration.density =
+        globalConfigurationModule.configuration.densityConfig;
     }
     /** @type {String} */
     this.mode = 'disabled';

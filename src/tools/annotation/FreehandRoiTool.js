@@ -28,6 +28,7 @@ import { freehandRoiCursor } from '../cursors/index.js';
 import freehandUtils from '../../util/freehand/index.js';
 import { getLogger } from '../../util/logger.js';
 import throttle from '../../util/throttle';
+import common from '../../util/common';
 
 const logger = getLogger('tools:annotation:FreehandRoiTool');
 
@@ -100,10 +101,11 @@ export default class FreehandRoiTool extends BaseAnnotationTool {
     }
 
     const measurementData = {
+      primaryKey: common.getUUID(),
       visible: true,
       active: true,
       invalidated: true,
-      color: undefined,
+      color: toolColors.getToolColor(),
       handles: {
         points: [],
       },

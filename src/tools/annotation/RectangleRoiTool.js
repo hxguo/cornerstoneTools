@@ -24,6 +24,7 @@ import throttle from './../../util/throttle.js';
 import { rectangleRoiCursor } from '../cursors/index.js';
 import { getLogger } from '../../util/logger.js';
 import getPixelSpacing from '../../util/getPixelSpacing';
+import common from '../../util/common';
 
 const logger = getLogger('tools:annotation:RectangleRoiTool');
 
@@ -65,9 +66,10 @@ export default class RectangleRoiTool extends BaseAnnotationTool {
     }
 
     return {
+      primaryKey: common.getUUID(),
       visible: true,
       active: true,
-      color: undefined,
+      color: toolColors.getToolColor(),
       invalidated: true,
       handles: {
         start: {

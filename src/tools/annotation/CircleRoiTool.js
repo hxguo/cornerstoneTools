@@ -26,6 +26,7 @@ import { getLogger } from '../../util/logger.js';
 import getPixelSpacing from '../../util/getPixelSpacing';
 import { circleRoiCursor } from '../cursors/index.js';
 import getCircleCoords from '../../util/getCircleCoords';
+import common from '../../util/common';
 
 const logger = getLogger('tools:annotation:CircleRoiTool');
 
@@ -63,9 +64,10 @@ export default class CircleRoiTool extends BaseAnnotationTool {
     }
 
     return {
+      primaryKey: common.getUUID(),
       visible: true,
       active: true,
-      color: undefined,
+      color: toolColors.getToolColor(),
       invalidated: true,
       handles: {
         start: {

@@ -26,6 +26,7 @@ import triggerEvent from '../../util/triggerEvent.js';
 import EVENTS from '../../events.js';
 import getPixelSpacing from '../../util/getPixelSpacing';
 import throttle from '../../util/throttle';
+import common from '../../util/common';
 
 /**
  * @public
@@ -55,9 +56,10 @@ export default class AngleTool extends BaseAnnotationTool {
   createNewMeasurement(eventData) {
     // Create the measurement data for this tool with the end handle activated
     return {
+      primaryKey: common.getUUID(),
       visible: true,
       active: true,
-      color: undefined,
+      color: toolColors.getToolColor(),
       invalidated: true,
       handles: {
         start: {
